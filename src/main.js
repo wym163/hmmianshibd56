@@ -13,9 +13,9 @@ import 'vant/lib/index.css'
 import 'amfe-flexible'
 // 导入字体图标
 // import './styles/iconfont.less'
-import './styles/iconfont.less'
+import './style/iconfont.css'
 // 初始样式
-import './styles/base.less'
+import './style/base.less'
 // 导入vant
 // import { Vant, Tabbar, TabbarItem } from 'vant'
 // Vue.use(Tabbar)
