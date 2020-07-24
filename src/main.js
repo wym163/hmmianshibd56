@@ -16,10 +16,6 @@ import 'amfe-flexible'
 import './style/iconfont.css'
 // 初始样式
 import './style/base.less'
-// 导入vant
-// import { Vant, Tabbar, TabbarItem } from 'vant'
-// Vue.use(Tabbar)
-// Vue.use(TabbarItem)
 Vue.use(Vant)
 Vue.config.productionTip = false
 

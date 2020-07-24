@@ -1,6 +1,7 @@
 <template>
   <div class="my">
     <div class="header">
+      <div class="wifi"></div>
       <div class="w">
         <div class="top">
           <div class="user">
@@ -136,9 +137,14 @@ export default {
     height: 260px;
     background: linear-gradient(to right, #ce0031, #b8002c);
     position: relative;
+    .wifi {
+      width: 375px;
+      height: 44px;
+      background-color: pink;
+    }
     .top {
       position: relative;
-      padding-top: 76px;
+      padding-top: 31px;
       display: flex;
       // justify-content: space-around;
       .user {
