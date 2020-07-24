@@ -9,20 +9,36 @@ Vue.use(VueRouter)
 const router = new VueRouter({
   routes: [
     {
+      path: '/',
+      redirect: '/Company'
+    },
+    {
       path: '/Company',
-      component: Company
+      component: Company,
+      meta: {
+        showTabber: true
+      }
     },
     {
       path: '/Question',
-      component: Question
+      component: Question,
+      meta: {
+        showTabber: true
+      }
     },
     {
       path: '/Find',
-      component: Find
+      component: Find,
+      meta: {
+        showTabber: true
+      }
     },
     {
       path: '/My',
-      component: My
+      component: My,
+      meta: {
+        showTabber: true
+      }
     }
   ]
 })
