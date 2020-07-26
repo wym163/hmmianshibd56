@@ -1,6 +1,6 @@
 <template>
   <div class="Login">
-    <div class="wifi"></div>
+    <!-- <div class="wifi"></div> -->
     <van-nav-bar class="left_arrow" left-arrow @click-left="onClickLeft" />
     <div class="w">
       <div class="title">你好，请登录</div>
@@ -22,6 +22,9 @@
           >
             <template #left-icon>
               <i class="iconfont iconyanzhengma icon_right"></i>
+            </template>
+            <template #button>
+              <van-button class="codebtn" size="small" type="default">发送验证码</van-button>
             </template>
           </van-field>
           <div class="check">
@@ -77,6 +80,9 @@ export default {
     .icon_right {
       margin-left: 20px;
       margin-right: 20px;
+    }
+    .codebtn {
+      border-left: 1px solid #ccc;
     }
     .check {
       margin-top: 15px;
