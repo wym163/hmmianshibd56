@@ -1,21 +1,28 @@
 <template>
   <div class="login">
     <navbar></navbar>
+    <!-- <van-loading color="#1989fa" vertical /> -->
     <div class="w">
       <div class="title">你好，请登录</div>
       <div class="form">
-        <van-form @submit="onSubmit">
+        <van-form :model="form" @submit="onSubmit">
           <van-field
-            v-model="phone"
+            v-model="form.mobile"
             placeholder="请输入手机号"
-            :rules="[{ required: true, message: '请填写手机号' }]"
+            :rules="[
+              {
+                required: true,
+                pattern: /^1[3-9]\d{9}$/,
+                message: '手机号格式不对'
+              }
+            ]"
           >
             <template #left-icon>
               <i class="iconfont iconbianzu1 icon_right"></i>
             </template>
           </van-field>
           <van-field
-            v-model="code"
+            v-model="form.code"
             placeholder="请输入验证码"
             :rules="[{ required: true, message: '请填写验证码' }]"
           >
@@ -23,24 +30,33 @@
               <i class="iconfont iconyanzhengma icon_right"></i>
             </template>
             <template #button>
-              <van-button class="codebtn" size="small" type="default"
+              <van-button
+                @click="getCode"
+                class="codebtn"
+                size="small"
+                type="default"
                 >获取验证码</van-button
               >
             </template>
           </van-field>
           <div class="check">
-            <van-checkbox v-model="isCheck" icon-size="0px"
-              >登录即同意<span class="blue">《用户使用协议》</span>和<span
+            <p>
+              登录即同意<span class="blue">《用户使用协议》</span>和<span
                 class="blue"
                 >《隐私协议》</span
-              ></van-checkbox
-            >
+              >
+            </p>
           </div>
-          <div style="margin: 16px;">
-            <van-button round block type="danger" native-type="submit">
-              确定
-            </van-button>
-          </div>
+          <van-button
+            @click="toLogin"
+            class="submit"
+            round
+            block
+            type="danger"
+            native-type="submit"
+          >
+            确定
+          </van-button>
         </van-form>
       </div>
     </div>
@@ -49,12 +65,15 @@
 
 <script>
 import navbar from '@/components/navbar'
+import { apiGetCode, apiGetLogin } from '@/api/login'
+import { setToken } from '@/utils/Local.js'
 export default {
   data () {
     return {
-      phone: '',
-      code: '',
-      isCheck: ''
+      form: {
+        mobile: '',
+        code: ''
+      }
     }
   },
   components: {
@@ -64,6 +83,23 @@ export default {
     onClickLeft () {},
     onSubmit (values) {
       console.log('submit', values)
+    },
+    getCode () {
+      apiGetCode(this.form).then(res => {
+        window.console.log(res)
+        this.$toast.success(res.data)
+      })
+    },
+    toLogin () {
+      apiGetLogin(this.form).then(res => {
+        if (res.code === 200) {
+          window.console.log(res)
+          setToken(res.data.jwt)
+          this.$toast.success(res.message)
+        } else {
+          this.$toast.fail(res.message)
+        }
+      })
     }
   }
 }
@@ -100,6 +136,10 @@ export default {
       .blue {
         color: #26c2da;
       }
+    }
+    .submit {
+      font-size: 18px;
+      font-weight: 600;
     }
   }
 }
