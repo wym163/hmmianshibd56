@@ -1,7 +1,6 @@
 <template>
-  <div class="Login">
-    <!-- <div class="wifi"></div> -->
-    <van-nav-bar class="left_arrow" left-arrow @click-left="onClickLeft" />
+  <div class="login">
+    <navbar></navbar>
     <div class="w">
       <div class="title">你好，请登录</div>
       <div class="form">
@@ -24,7 +23,9 @@
               <i class="iconfont iconyanzhengma icon_right"></i>
             </template>
             <template #button>
-              <van-button class="codebtn" size="small" type="default">发送验证码</van-button>
+              <van-button class="codebtn" size="small" type="default"
+                >获取验证码</van-button
+              >
             </template>
           </van-field>
           <div class="check">
@@ -47,6 +48,7 @@
 </template>
 
 <script>
+import navbar from '@/components/navbar'
 export default {
   data () {
     return {
@@ -54,6 +56,9 @@ export default {
       code: '',
       isCheck: ''
     }
+  },
+  components: {
+    navbar
   },
   methods: {
     onClickLeft () {},
@@ -65,7 +70,7 @@ export default {
 </script>
 
 <style lang="less">
-.Login {
+.login {
   .wifi {
     width: 375px;
     height: 44px;
@@ -82,7 +87,11 @@ export default {
       margin-right: 20px;
     }
     .codebtn {
-      border-left: 1px solid #ccc;
+      padding-left: 13px;
+      color: #00b8d4;
+      border: 0px;
+      border-left: 1px solid #f7f4f5;
+      font-size: 16px;
     }
     .check {
       margin-top: 15px;

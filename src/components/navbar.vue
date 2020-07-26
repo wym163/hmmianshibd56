@@ -1,0 +1,41 @@
+<template>
+  <van-nav-bar
+    class="navbar"
+    :title="title"
+    :left-text="left_text"
+    :right-text="right_text"
+    :left-arrow="left_arrow"
+    @click-left="onClickLeft"
+    @click-right="onClickRight"
+  >
+    <template #left>
+        <i class="iconfont iconbtn_nav_back nav_back"></i>
+    </template>
+  </van-nav-bar>
+</template>
+
+<script>
+export default {
+  props: ['title', 'left_text', 'right_text', 'left_arrow'],
+  methods: {
+    onClickLeft () {
+      window.console.log('右边的文本点击事件')
+    },
+    onClickRight () {
+      window.console.log('左边的文本点击事件')
+    }
+  }
+}
+</script>
+
+<style lang="less">
+.navbar {
+    height: 44px;
+    .van-nav-bar__left{
+        padding-left: 0px;
+    }
+    .nav_back{
+        font-size: 44px;
+    }
+}
+</style>
