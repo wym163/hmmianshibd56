@@ -2,6 +2,7 @@
   <div>
     <router-view></router-view>
     <van-tabbar
+      class="tabbar"
       route
       placeholder
       v-model="active"
@@ -48,7 +49,9 @@ export default {
 </script>
 
 <style lang="less">
-.iconfont{
-  font-size: 28px;
+.tabbar {
+  .iconfont {
+    font-size: 28px;
+  }
 }
 </style>

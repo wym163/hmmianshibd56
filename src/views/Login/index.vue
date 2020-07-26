@@ -83,7 +83,7 @@ export default {
       font-size: 12px;
       margin-bottom: 44px;
       .blue {
-        color: #26C2DA;
+        color: #26c2da;
       }
     }
   }

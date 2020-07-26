@@ -1,14 +1,14 @@
 <template>
   <div class="my">
     <div class="header">
-      <div class="wifi"></div>
+      <!-- <div class="wifi"></div> -->
       <div class="w">
         <div class="top">
           <div class="user">
             <div>续命咖啡</div>
             <p>面试不求人,我有面试宝典</p>
           </div>
-          <img class="userimg" src="@/assets/logo.png" alt="" />
+          <img class="userimg" src="@/assets/aaa.jpg" alt="" />
         </div>
         <div class="center">
           <div>
@@ -28,7 +28,13 @@
             <span>正确率</span>
           </div>
         </div>
-        <van-cell
+        <MMcell
+          class="job"
+          title="我的岗位"
+          value="产品经理"
+          classicon="iconicon_mine_gangwei"
+        ></MMcell>
+        <!-- <van-cell
           center
           class="job"
           title="单元格"
@@ -39,7 +45,7 @@
           <template #icon>
             <i class="iconfont iconicon_mine_gangwei icon_right"></i>
           </template>
-        </van-cell>
+        </van-cell> -->
       </div>
     </div>
     <div class="content">
@@ -65,7 +71,7 @@
           </div>
         </div>
         <div class="dataList">
-          <van-cell-groud>
+          <!-- <van-cell-group>
             <van-cell
               class="job1"
               title="我的面经分享"
@@ -108,18 +114,55 @@
                 <i class="iconfont iconxingxing2 icon_right"></i>
               </template>
             </van-cell>
-          </van-cell-groud>
+          </van-cell-group> -->
+          <van-cell-group class="van-cell-group">
+            <MMcell
+              title="我的面经分享"
+              value="21"
+              classicon="iconicon_mine_mianjing"
+            ></MMcell>
+            <MMcell
+              title="我的消息"
+              value="98"
+              classicon="iconicon_mine_xiaoxi"
+            ></MMcell>
+            <MMcell
+              title="收藏的题库"
+              value="32"
+              classicon="iconicon_mine_tikushoucang"
+            ></MMcell>
+            <MMcell
+              title="收藏的企业"
+              value="32"
+              classicon="iconicon_mine_qiyeshoucang"
+            ></MMcell>
+            <MMcell
+              title="我的错题"
+              value="123"
+              classicon="iconicon_mine_cuoti"
+            ></MMcell>
+            <MMcell
+              title="收藏的面试经验"
+              value="166"
+              classicon="iconxingxing2"
+            ></MMcell>
+          </van-cell-group>
         </div>
       </div>
     </div>
   </div>
 </template>
 <script>
+import MMcell from './MMcell'
 export default {
+  name: 'my',
   data () {
     return {}
   },
-  methods: {}
+  methods: {},
+  components: {
+    MMcell
+  }
 }
 </script>
 
@@ -186,10 +229,6 @@ export default {
       height: 55px;
       background: #ffffff;
       border-radius: 8px;
-      .icon_right {
-        padding-right: 12px;
-        font-size: 20px;
-      }
     }
   }
   .content {
@@ -236,16 +275,20 @@ export default {
     }
     .dataList {
       margin-bottom: 20px;
+      .van-cell-group {
+        border-radius: 8px;
+        overflow: hidden;
+      }
       .icon_right {
         padding-right: 12px;
         font-size: 20px;
       }
-      .job1 {
-        border-radius: 8px 8px 0px 0px;
-      }
-      .job2 {
-        border-radius: 0px 0px 8px 8px;
-      }
+      // .job1 {
+      //   border-radius: 8px 8px 0px 0px;
+      // }
+      // .job2 {
+      //   border-radius: 0px 0px 8px 8px;
+      // }
     }
   }
 }
