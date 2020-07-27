@@ -16,7 +16,9 @@ import 'amfe-flexible'
 import './style/iconfont.css'
 // 初始样式
 import './style/base.less'
+import navbar from '@/components/navbar.vue'
 Vue.use(Vant)
+Vue.component(navbar.name, navbar)
 Vue.config.productionTip = false
 
 new Vue({

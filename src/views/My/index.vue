@@ -5,10 +5,14 @@
       <div class="w">
         <div class="top">
           <div class="user">
-            <div>续命咖啡</div>
-            <p>面试不求人,我有面试宝典</p>
+            <div>{{ $store.state.userInfo.nickname }}</div>
+            <p>{{ $store.state.userInfo.intro }}</p>
           </div>
-          <img class="userimg" src="@/assets/aaa.jpg" alt="" />
+          <img
+            class="userimg"
+            :src="imgUrl"
+            alt=""
+          />
         </div>
         <div class="center">
           <div>
@@ -154,11 +158,17 @@
 </template>
 <script>
 import MMcell from './MMcell'
+// import store from '@/store/index'
 export default {
   name: 'my',
   data () {
-    return {}
+    return {
+      imgUrl: process.env.VUE_APP_URL + this.$store.state.userInfo.avatar
+    }
   },
+  // created () {
+  //   window.console.log(this.$store.state.userInfo.nickname)
+  // },
   methods: {},
   components: {
     MMcell

@@ -71,7 +71,7 @@ export default {
   data () {
     return {
       form: {
-        mobile: '',
+        mobile: '18888881111',
         code: ''
       }
     }
@@ -82,7 +82,7 @@ export default {
   methods: {
     onClickLeft () {},
     onSubmit (values) {
-      console.log('submit', values)
+      // console.log('submit', values)
     },
     getCode () {
       apiGetCode(this.form).then(res => {
@@ -96,8 +96,8 @@ export default {
           window.console.log(res)
           setToken(res.data.jwt)
           this.$toast.success(res.message)
-        } else {
-          this.$toast.fail(res.message)
+          this.$router.push('/my')
+          this.$store.state.userInfo = res.data.user
         }
       })
     }
