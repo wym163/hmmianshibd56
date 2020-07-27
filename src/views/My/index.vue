@@ -5,37 +5,33 @@
       <div class="w">
         <div class="top">
           <div class="user">
-            <div>{{ $store.state.userInfo.nickname }}</div>
-            <p>{{ $store.state.userInfo.intro }}</p>
+            <div>{{ userInfo.nickname }}</div>
+            <p>{{ userInfo.intro }}</p>
           </div>
-          <img
-            class="userimg"
-            :src="imgUrl"
-            alt=""
-          />
+          <img class="userimg" :src="userInfo.avatar" alt="" />
         </div>
         <div class="center">
-          <div>
-            <p>298</p>
+          <div class="center_c">
+            <p>{{userInfo.submitNum}}</p>
             <span>累计答题</span>
           </div>
-          <div>
-            <p>98</p>
+          <div class="center_c">
+            <p>{{userInfo.collectArticles.length}}</p>
             <span>收藏题目</span>
           </div>
-          <div>
-            <p>198</p>
+          <div class="center_c">
+            <p>{{userInfo.errorNum}}</p>
             <span>我的错题</span>
           </div>
-          <div>
-            <p>76%</p>
+          <div class="center_c">
+            <p>{{(((userInfo.submitNum-userInfo.errorNum)/userInfo.submitNum)*100).toFixed(1)}}%</p>
             <span>正确率</span>
           </div>
         </div>
         <MMcell
           class="job"
           title="我的岗位"
-          value="产品经理"
+          :value="userInfo.position"
           classicon="iconicon_mine_gangwei"
         ></MMcell>
         <!-- <van-cell
@@ -58,67 +54,23 @@
           <div class="data">面经数据</div>
           <div class="items">
             <div class="item">
-              <div class="title">昨日阅读<span>+300</span></div>
-              <p>17</p>
+              <div class="title">昨日阅读<span>{{userInfo.shareData.read.yesterday}}</span></div>
+              <p>{{userInfo.shareData.read.total}}</p>
               <span>阅读总数</span>
             </div>
             <div class="item">
-              <div class="title">昨日获赞<span>+300</span></div>
-              <p>297</p>
+              <div class="title">昨日获赞<span>{{userInfo.shareData.star.yesterday}}</span></div>
+              <p>{{userInfo.shareData.star.total}}</p>
               <span>获赞总数</span>
             </div>
             <div class="item">
-              <div class="title">昨日新增<span>+12</span></div>
-              <p>187</p>
+              <div class="title">昨日新增<span>{{userInfo.shareData.comment.yesterday}}</span></div>
+              <p>{{userInfo.shareData.comment.total}}</p>
               <span>评论总数</span>
             </div>
           </div>
         </div>
         <div class="dataList">
-          <!-- <van-cell-group>
-            <van-cell
-              class="job1"
-              title="我的面经分享"
-              :border="false"
-              is-link
-              value="21"
-            >
-              <template #icon>
-                <i class="iconfont iconicon_mine_mianjing icon_right"></i>
-              </template>
-            </van-cell>
-            <van-cell title="我的消息" :border="false" is-link value="98">
-              <template #icon>
-                <i class="iconfont iconicon_mine_xiaoxi icon_right"></i>
-              </template>
-            </van-cell>
-            <van-cell title="收藏的题库" :border="false" is-link value="32">
-              <template #icon>
-                <i class="iconfont iconicon_mine_tikushoucang icon_right"></i>
-              </template>
-            </van-cell>
-            <van-cell title="收藏的企业" :border="false" is-link value="32">
-              <template #icon>
-                <i class="iconfont iconicon_mine_qiyeshoucang icon_right"></i>
-              </template>
-            </van-cell>
-            <van-cell title="我的错题" :border="false" is-link value="123">
-              <template #icon>
-                <i class="iconfont iconicon_mine_cuoti icon_right"></i>
-              </template>
-            </van-cell>
-            <van-cell
-              class="job2"
-              title="收藏的面试经验"
-              :border="false"
-              is-link
-              value="166"
-            >
-              <template #icon>
-                <i class="iconfont iconxingxing2 icon_right"></i>
-              </template>
-            </van-cell>
-          </van-cell-group> -->
           <van-cell-group class="van-cell-group">
             <MMcell
               title="我的面经分享"
@@ -127,12 +79,12 @@
             ></MMcell>
             <MMcell
               title="我的消息"
-              value="98"
+              :value="userInfo.systemMessages"
               classicon="iconicon_mine_xiaoxi"
             ></MMcell>
             <MMcell
               title="收藏的题库"
-              value="32"
+              :value="userInfo.collectQuestions.length"
               classicon="iconicon_mine_tikushoucang"
             ></MMcell>
             <MMcell
@@ -142,12 +94,12 @@
             ></MMcell>
             <MMcell
               title="我的错题"
-              value="123"
+              :value="userInfo.errorQuestions.length"
               classicon="iconicon_mine_cuoti"
             ></MMcell>
             <MMcell
               title="收藏的面试经验"
-              value="166"
+              :value="userInfo.collectArticles.length"
               classicon="iconxingxing2"
             ></MMcell>
           </van-cell-group>
@@ -158,17 +110,16 @@
 </template>
 <script>
 import MMcell from './MMcell'
-// import store from '@/store/index'
 export default {
   name: 'my',
   data () {
-    return {
-      imgUrl: process.env.VUE_APP_URL + this.$store.state.userInfo.avatar
+    return {}
+  },
+  computed: {
+    userInfo () {
+      return this.$store.state.userInfo
     }
   },
-  // created () {
-  //   window.console.log(this.$store.state.userInfo.nickname)
-  // },
   methods: {},
   components: {
     MMcell
@@ -222,7 +173,11 @@ export default {
     .center {
       display: flex;
       justify-content: space-around;
+      align-content: center;
       margin-top: 31px;
+      .center_c {
+        text-align: center;
+      }
       p {
         color: #fff;
         font-size: 22px;

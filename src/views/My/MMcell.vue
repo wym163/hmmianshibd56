@@ -18,7 +18,18 @@
 
 <script>
 export default {
-  props: ['title', 'value', 'classicon'],
+  props: {
+    title: {
+      type: String
+    },
+    value: {
+      type: [String, Number]
+    },
+    classicon: {
+      type: String
+    }
+  },
+  // ['title', 'value', 'classicon'],
   data () {
     return {}
   },

@@ -1,15 +1,15 @@
-// 导入_fetch
-import _fetch from '@/utils/request.js'
+// 导入request
+import request from '@/utils/request.js'
 // 登录接口
 function apiGetCode (data) {
-  return _fetch({
+  return request({
     url: '/au/code',
     method: 'post',
     data
   })
 }
 function apiGetLogin (data) {
-  return _fetch({
+  return request({
     url: '/au/login',
     method: 'post',
     data

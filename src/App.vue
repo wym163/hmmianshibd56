@@ -4,6 +4,7 @@
     <van-tabbar
       class="tabbar"
       route
+      fixed
       placeholder
       v-model="active"
       active-color="#e40137"

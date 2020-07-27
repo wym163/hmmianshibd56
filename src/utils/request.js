@@ -1,9 +1,9 @@
 import axios from 'axios'
-var _fetch = axios.create({
-  baseURL: process.env.VUE_APP_URL,
-  withCredentials: true
+var request = axios.create({
+  baseURL: process.env.VUE_APP_URL
+  // withCredentials: true
 })
-_fetch.interceptors.response.use(
+request.interceptors.response.use(
   function (response) {
     if (response) {
       if (response.data.code === 200) {
@@ -21,4 +21,4 @@ _fetch.interceptors.response.use(
     return Promise.reject(error)
   }
 )
-export default _fetch
+export default request
