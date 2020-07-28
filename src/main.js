@@ -17,8 +17,12 @@ import './style/iconfont.css'
 // 初始样式
 import './style/base.less'
 import navbar from '@/components/navbar.vue'
+import MMcell from '@/components/MMcell.vue'
 Vue.use(Vant)
+// 注册全局navbar
 Vue.component(navbar.name, navbar)
+// 注册全局的MMcell
+Vue.component(MMcell.name, MMcell)
 Vue.config.productionTip = false
 
 new Vue({

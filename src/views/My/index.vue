@@ -12,19 +12,27 @@
         </div>
         <div class="center">
           <div class="center_c">
-            <p>{{userInfo.submitNum}}</p>
+            <p>{{ userInfo.submitNum }}</p>
             <span>累计答题</span>
           </div>
           <div class="center_c">
-            <p>{{userInfo.collectArticles.length}}</p>
+            <p>{{ userInfo.collectArticles.length }}</p>
             <span>收藏题目</span>
           </div>
           <div class="center_c">
-            <p>{{userInfo.errorNum}}</p>
+            <p>{{ userInfo.errorNum }}</p>
             <span>我的错题</span>
           </div>
           <div class="center_c">
-            <p>{{(((userInfo.submitNum-userInfo.errorNum)/userInfo.submitNum)*100).toFixed(1)}}%</p>
+            <p>
+              {{
+                (
+                  ((userInfo.submitNum - userInfo.errorNum) /
+                    userInfo.submitNum) *
+                  100
+                ).toFixed(1)
+              }}%
+            </p>
             <span>正确率</span>
           </div>
         </div>
@@ -54,18 +62,24 @@
           <div class="data">面经数据</div>
           <div class="items">
             <div class="item">
-              <div class="title">昨日阅读<span>{{userInfo.shareData.read.yesterday}}</span></div>
-              <p>{{userInfo.shareData.read.total}}</p>
+              <div class="title">
+                昨日阅读<span>{{ userInfo.shareData.read.yesterday }}</span>
+              </div>
+              <p>{{ userInfo.shareData.read.total }}</p>
               <span>阅读总数</span>
             </div>
             <div class="item">
-              <div class="title">昨日获赞<span>{{userInfo.shareData.star.yesterday}}</span></div>
-              <p>{{userInfo.shareData.star.total}}</p>
+              <div class="title">
+                昨日获赞<span>{{ userInfo.shareData.star.yesterday }}</span>
+              </div>
+              <p>{{ userInfo.shareData.star.total }}</p>
               <span>获赞总数</span>
             </div>
             <div class="item">
-              <div class="title">昨日新增<span>{{userInfo.shareData.comment.yesterday}}</span></div>
-              <p>{{userInfo.shareData.comment.total}}</p>
+              <div class="title">
+                昨日新增<span>{{ userInfo.shareData.comment.yesterday }}</span>
+              </div>
+              <p>{{ userInfo.shareData.comment.total }}</p>
               <span>评论总数</span>
             </div>
           </div>
@@ -109,7 +123,6 @@
   </div>
 </template>
 <script>
-import MMcell from './MMcell'
 export default {
   name: 'my',
   data () {
@@ -120,10 +133,7 @@ export default {
       return this.$store.state.userInfo
     }
   },
-  methods: {},
-  components: {
-    MMcell
-  }
+  methods: {}
 }
 </script>
 
@@ -163,6 +173,7 @@ export default {
         }
       }
       .userimg {
+        border: 3px solid rgba(255, 255, 255, 0.38);
         position: absolute;
         left: 77%;
         width: 50px;

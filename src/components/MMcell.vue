@@ -10,6 +10,9 @@
     <template #icon>
       <i class="iconfont icon_right" :class="classicon"></i>
     </template>
+    <template>
+      <slot>{{value}}</slot>
+    </template>
     <template #right-icon>
       <i class="iconfont iconicon_more righticon"></i>
     </template>
@@ -18,6 +21,7 @@
 
 <script>
 export default {
+  name: 'MMcell',
   props: {
     title: {
       type: String
@@ -45,6 +49,7 @@ export default {
 
 <style lang="less">
 .cell {
+  border-radius: 8px;
   height: 54px;
   .icon_right {
     padding-right: 12px;
