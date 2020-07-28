@@ -5,7 +5,8 @@ import question from '@/views/question/index.vue'
 import find from '@/views/find/index.vue'
 import my from '@/views/my/index.vue'
 import login from '@/views/login/index.vue'
-import userInfo from '@/views/userInfo/index.vue'
+import userInfo from '@/views/userInfo/userInfo.vue'
+import edit from '@/views/userInfo/edit.vue'
 
 Vue.use(VueRouter)
 // const originalPush = VueRouter.prototype.push
@@ -57,6 +58,10 @@ const router = new VueRouter({
     {
       path: '/userInfo',
       component: userInfo
+    },
+    {
+      path: '/edit',
+      component: edit
     }
   ]
 })
