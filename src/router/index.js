@@ -7,7 +7,10 @@ import my from '@/views/my/index.vue'
 import login from '@/views/login/index.vue'
 import userInfo from '@/views/userInfo/userInfo.vue'
 import edit from '@/views/userInfo/edit.vue'
-
+import store from '@/store/index.js'
+import { Toast } from 'vant'
+import { getToken, removeToken } from '@/utils/Local'
+import { apiGetInfo } from '@/api/user.js'
 Vue.use(VueRouter)
 // const originalPush = VueRouter.prototype.push
 // VueRouter.prototype.push = function push (location) {
@@ -52,7 +55,8 @@ const router = new VueRouter({
       path: '/my',
       component: my,
       meta: {
-        showTabber: true
+        showTabber: true,
+        needLogin: true
       }
     },
     {
@@ -64,6 +68,41 @@ const router = new VueRouter({
       component: edit
     }
   ]
+})
+router.beforeEach((to, from, next) => {
+  // 要登录才进入
+  if (to.meta.needLogin) {
+    // 已经登录
+    if (store.state.isLogin) {
+      next()
+    } else {
+      // 还未登录
+      //  没登录有token
+      if (getToken()) {
+        apiGetInfo()
+          .then(res => {
+            window.console.log(res)
+            res.data.avatar = process.env.VUE_APP_URL + res.data.avatar
+            store.commit('SETUSERINFO', res.data)
+            store.commit('SETISLOGIN', true)
+            next()
+          })
+          .catch(err => {
+            console.log(err)
+            removeToken()
+            Toast.fail('请先登录')
+            next(`/login?redirect=${to.fullPath}`)
+          })
+      } else {
+        // 没登录
+        Toast.fail('请先登录')
+        next(`/login?redirect=${to.fullPath}`)
+      }
+    }
+  } else {
+    // 不登录也能进入
+    next()
+  }
 })
 
 export default router

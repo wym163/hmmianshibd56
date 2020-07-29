@@ -26,7 +26,7 @@ export default {
   props: ['title', 'left_text', 'right_text', 'left_arrow'],
   methods: {
     onClickLeft () {
-      window.console.log('左边的文本点击事件')
+      this.$emit('onClickLeft')
     },
     onClickRight () {
       window.console.log('右边的文本点击事件')

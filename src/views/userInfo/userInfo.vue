@@ -9,15 +9,15 @@
       <div class="avatar">
         <MMcell style="height:60px" title="头像">
           <template>
-            <img class="avatarimg" src="@/assets/aaa.jpg" alt="" />
+            <img class="avatarimg" :src="userInfo.avatar" alt="" />
           </template>
         </MMcell>
       </div>
       <van-cell-group class="van-cell-group">
-        <MMcell title="昵称"></MMcell>
-        <MMcell title="性别"></MMcell>
-        <MMcell title="地区"></MMcell>
-        <MMcell title="个人简历"></MMcell>
+        <MMcell :title="userInfo.nickname"></MMcell>
+        <MMcell :title="userGender"></MMcell>
+        <MMcell :title="userInfo.area"></MMcell>
+        <MMcell title="个人简历" :value="userInfo.intro"></MMcell>
       </van-cell-group>
       <van-button type="default" class="userInfoBottom">
         确定退出
@@ -27,7 +27,15 @@
 </template>
 
 <script>
-export default {}
+import { mapState, mapGetters } from 'vuex'
+export default {
+  name: 'userInfo',
+  created () {},
+  computed: {
+    ...mapGetters(['userGender']),
+    ...mapState(['userInfo'])
+  }
+}
 </script>
 
 <style lang="less">

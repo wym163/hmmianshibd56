@@ -11,7 +11,7 @@
       <i class="iconfont icon_right" :class="classicon"></i>
     </template>
     <template>
-      <slot>{{value}}</slot>
+      <slot></slot>
     </template>
     <template #right-icon>
       <i class="iconfont iconicon_more righticon"></i>

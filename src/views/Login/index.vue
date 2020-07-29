@@ -1,6 +1,6 @@
 <template>
   <div class="login">
-    <navbar></navbar>
+    <navbar @onClickLeft="onClickLeft"></navbar>
     <!-- <van-loading color="#1989fa" vertical /> -->
     <div class="w">
       <div class="title">你好，请登录</div>
@@ -26,6 +26,7 @@
             <van-col :span="16">
               <van-field
                 v-model="form.code"
+                name="code"
                 placeholder="请输入验证码"
                 :rules="[{ required: true, message: '请填写验证码' }]"
               >
@@ -72,6 +73,7 @@
 import navbar from '@/components/navbar'
 import { apiGetCode, apiGetLogin } from '@/api/login'
 import { setToken } from '@/utils/Local.js'
+import { mapMutations } from 'vuex'
 export default {
   data () {
     return {
@@ -92,16 +94,33 @@ export default {
     navbar
   },
   methods: {
+    ...mapMutations(['SETUSERINFO', 'SETISLOGIN']),
+    onClickLeft () {
+      if (this.$route.query.redirect) {
+        this.$router.push('/find')
+      } else {
+        this.$router.go(-1)
+      }
+    },
     // form表单提交事件
     onSubmit (value) {
+      // window.console.log(value)
       apiGetLogin(value).then(res => {
         if (res.code === 200) {
           window.console.log(res)
           setToken(res.data.jwt)
           this.$toast.success(res.message)
-          this.$router.push('/my')
-          this.$store.commit('SETUSERINFO', res.data.user)
+          this.SETUSERINFO(res.data.user)
+          // this.$store.commit('SETUSERINFO', res.data.user)
           res.data.user.avatar = process.env.VUE_APP_URL + res.data.user.avatar
+          // this.$store.state.isLogin = true
+          this.SETISLOGIN(true)
+          // this.$router.push('/find')
+          if (this.$route.query.redirect) {
+            this.$router.push(`${this.$route.query.redirect}`)
+          } else {
+            this.$router.push('/find')
+          }
         }
       })
     },

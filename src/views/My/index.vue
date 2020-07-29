@@ -42,18 +42,6 @@
           :value="userInfo.position"
           classicon="iconicon_mine_gangwei"
         ></MMcell>
-        <!-- <van-cell
-          center
-          class="job"
-          title="单元格"
-          icon="location-o"
-          is-link
-          value="内容"
-        >
-          <template #icon>
-            <i class="iconfont iconicon_mine_gangwei icon_right"></i>
-          </template>
-        </van-cell> -->
       </div>
     </div>
     <div class="content">
@@ -123,15 +111,14 @@
   </div>
 </template>
 <script>
+import { mapState } from 'vuex'
 export default {
   name: 'my',
   data () {
     return {}
   },
   computed: {
-    userInfo () {
-      return this.$store.state.userInfo
-    }
+    ...mapState(['userInfo'])
   },
   methods: {}
 }
