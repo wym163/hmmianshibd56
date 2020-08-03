@@ -39,9 +39,9 @@ export default {
   },
   methods: {
     clickCell () {
-      // this.$emit('click')
-      window.console.log('ahhhhh')
-      window.console.log(this.classicon)
+      this.$emit('clickCell')
+      // window.console.log('ahhhhh')
+      // window.console.log(this.classicon)
     }
   }
 }

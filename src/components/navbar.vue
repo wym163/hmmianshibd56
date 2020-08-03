@@ -27,9 +27,14 @@ export default {
   methods: {
     onClickLeft () {
       this.$emit('onClickLeft')
+      if (this.$route.query.redirect) {
+        this.$router.push('/find')
+      } else {
+        this.$router.go(-1)
+      }
     },
     onClickRight () {
-      window.console.log('右边的文本点击事件')
+      this.$emit('onClickRight')
     }
   }
 }

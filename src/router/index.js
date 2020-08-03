@@ -6,7 +6,7 @@ import find from '@/views/find/index.vue'
 import my from '@/views/my/index.vue'
 import login from '@/views/login/index.vue'
 import userInfo from '@/views/userInfo/userInfo.vue'
-import edit from '@/views/userInfo/edit.vue'
+import editInfo from '@/views/userInfo/editInfo.vue'
 import store from '@/store/index.js'
 import { Toast } from 'vant'
 import { getToken, removeToken } from '@/utils/Local'
@@ -61,11 +61,17 @@ const router = new VueRouter({
     },
     {
       path: '/userInfo',
-      component: userInfo
+      component: userInfo,
+      meta: {
+        needLogin: true
+      }
     },
     {
-      path: '/edit',
-      component: edit
+      path: '/editInfo',
+      component: editInfo,
+      meta: {
+        needLogin: true
+      }
     }
   ]
 })

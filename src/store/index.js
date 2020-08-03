@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-
+import areaData from '@/utils/area.js'
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
@@ -16,6 +16,9 @@ const store = new Vuex.Store({
     },
     SETISLOGIN (state, newIsLogin) {
       state.isLogin = newIsLogin
+    },
+    SETPROPVALUE (state, { propName, propValue }) {
+      state.userInfo[propName] = propValue
     }
   },
   getters: {
@@ -26,6 +29,9 @@ const store = new Vuex.Store({
         2: '女'
       }
       return genderObj[state.userInfo.gender]
+    },
+    userArea (state) {
+      return areaData.city_list[state.userInfo.area]
     }
   },
   actions: {},

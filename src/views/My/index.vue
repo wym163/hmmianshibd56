@@ -8,7 +8,12 @@
             <div>{{ userInfo.nickname }}</div>
             <p>{{ userInfo.intro }}</p>
           </div>
-          <img class="userimg" :src="userInfo.avatar" alt="" />
+          <img
+            @click="toUserInfo"
+            class="userimg"
+            :src="userInfo.avatar"
+            alt=""
+          />
         </div>
         <div class="center">
           <div class="center_c">
@@ -37,6 +42,7 @@
           </div>
         </div>
         <MMcell
+          @clickCell="toEditInfo"
           class="job"
           title="我的岗位"
           :value="userInfo.position"
@@ -120,7 +126,14 @@ export default {
   computed: {
     ...mapState(['userInfo'])
   },
-  methods: {}
+  methods: {
+    toUserInfo () {
+      this.$router.push('/userInfo')
+    },
+    toEditInfo () {
+      this.$router.push('/editInfo?prop=position')
+    }
+  }
 }
 </script>
 
