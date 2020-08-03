@@ -4,12 +4,11 @@
     :title="title"
     :left-text="left_text"
     :right-text="right_text"
-    :left-arrow="left_arrow"
     @click-left="onClickLeft"
     @click-right="onClickRight"
   >
     <template #left>
-      <i class="iconfont iconbtn_nav_back nav_back"></i>
+      <i v-if="showBack" class="iconfont iconbtn_nav_back nav_back"></i>
     </template>
     <template #title>
       <slot name="title"></slot>
@@ -23,7 +22,22 @@
 <script>
 export default {
   name: 'navbar',
-  props: ['title', 'left_text', 'right_text', 'left_arrow'],
+  // props: ['title', 'left_text', 'right_text', 'left_arrow'],
+  props: {
+    title: {
+      type: String
+    },
+    left_text: {
+      type: String
+    },
+    right_text: {
+      type: String
+    },
+    showBack: {
+      type: Boolean,
+      default: true
+    }
+  },
   methods: {
     onClickLeft () {
       this.$emit('onClickLeft')
