@@ -1,6 +1,8 @@
 <template>
   <div>
-    <router-view></router-view>
+    <keep-alive include="find">
+      <router-view></router-view>
+    </keep-alive>
     <van-tabbar
       class="tabbar"
       route

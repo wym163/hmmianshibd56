@@ -1,125 +1,127 @@
 <template>
-  <div class="find">
-    <!-- 导航栏 -->
-    <navbar :showBack="false" title="发现"></navbar>
-    <!-- 面试技巧区域 -->
-    <div class="skill">
-      <!-- 列表项 -->
-      <MMcell title="面试技巧" value="查看更多"></MMcell>
-      <div class="list">
-        <!-- 有图片 -->
-        <div class="item" v-for="item in technicList" :key="item.id">
-          <div class="left">
-            <h3>
-              {{ item.title }}
-            </h3>
-            <div class="detail-box">
-              <div class="time">{{ item.created_at | formatTime }}</div>
-              <div class="read">
-                <i class="iconfont iconicon_liulanliang">
-                  {{ item.read }}
-                </i>
-              </div>
-              <div class="star">
-                <i class="iconfont iconicon_dianzanliang">
-                  {{ item.star }}
-                </i>
-              </div>
-            </div>
-          </div>
-          <div class="cover" v-if="item.cover">
-            <img :src="item.cover" alt="" />
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- 市场数据区域 -->
-    <div class="market-data">
-      <MMcell title="市场数据" value="查看更多"></MMcell>
-      <div class="content">
-        <div class="tags">
-          <span class="tag">
-            {{ hotData.city }}
-          </span>
-          <span class="tag">
-            {{ hotData.position }}
-          </span>
-        </div>
-        <!-- 列表 -->
-        <div class="data-list">
-          <!-- 上箭头 -->
-          <div class="item" v-for="(item, index) in hotList" :key="index">
-            <div class="time">{{ item.year }}</div>
-            <div class="process">
-              <div
-                class="step"
-                :style="{
-                  width:
-                    ((item.salary / hotData.topSalary) * 100).toFixed(1) + '%'
-                }"
-              >
-                ￥{{ item.salary }}
-              </div>
-            </div>
-            <div class="arrow-box">
-              <i
-                class="iconfont"
-                :class="{
-                  iconicon_shangsheng: item.percent > 0,
-                  iconicon_xiajiang: item.percent < 0
-                }"
-              ></i>
-              <span v-if="item.percent">{{ item.percent }}%</span>
-            </div>
-          </div>
-        </div>
-        <!-- 更多 -->
-        <div class="more" @click="moreClick">
-          展开更多
-          <i class="iconfont iconicon_zhankai" :class="{rotate:isAll}"></i>
-        </div>
-      </div>
-    </div>
-    <!-- 面经分享 -->
-    <div class="share-container">
-      <MMcell title="面经分享" value="查看更多"></MMcell>
-      <div class="share-content">
+  <van-pull-refresh v-model="isLoading" @refresh="onRefresh">
+    <div class="find">
+      <!-- 导航栏 -->
+      <navbar :showBack="false" title="发现"></navbar>
+      <!-- 面试技巧区域 -->
+      <div class="skill">
+        <!-- 列表项 -->
+        <MMcell title="面试技巧" value="查看更多"></MMcell>
         <div class="list">
-          <div class="item">
-            <h3>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit.
-              Temporibus eius dolorum doloremque omnis quae, et nam consectetur,
-              ratione eveniet magni, cupiditate labore? Sunt numquam dolor optio
-              aut placeat praesentium facilis!
-            </h3>
-            <div class="desc">
-              Lorem ipsum dolor, sit amet consectetur adipisicing elit. Qui cum
-              autem ea? Ab repudiandae itaque error nam? Tenetur mollitia
-              adipisci harum voluptatum beatae earum. Quisquam reiciendis
-              quaerat ullam autem at.
+          <!-- 有图片 -->
+          <div class="item" v-for="item in technicList" :key="item.id">
+            <div class="left">
+              <h3>
+                {{ item.title }}
+              </h3>
+              <div class="detail-box">
+                <div class="time">{{ item.created_at | formatTime }}</div>
+                <div class="read">
+                  <i class="iconfont iconicon_liulanliang">
+                    {{ item.read }}
+                  </i>
+                </div>
+                <div class="star">
+                  <i class="iconfont iconicon_dianzanliang">
+                    {{ item.star }}
+                  </i>
+                </div>
+              </div>
             </div>
-            <div class="detail-box">
-              <div class="user">
-                <img src="../../assets/logo.png" alt="" />
-                三大件好事
+            <div class="cover" v-if="item.cover">
+              <img :src="item.cover" alt="" />
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- 市场数据区域 -->
+      <div class="market-data">
+        <MMcell title="市场数据" value="查看更多"></MMcell>
+        <div class="content">
+          <div class="tags">
+            <span class="tag">
+              {{ hotData.city }}
+            </span>
+            <span class="tag">
+              {{ hotData.position }}
+            </span>
+          </div>
+          <!-- 列表 -->
+          <div class="data-list">
+            <!-- 上箭头 -->
+            <div class="item" v-for="(item, index) in hotList" :key="index">
+              <div class="time">{{ item.year }}</div>
+              <div class="process">
+                <div
+                  class="step"
+                  :style="{
+                    width:
+                      ((item.salary / hotData.topSalary) * 100).toFixed(1) + '%'
+                  }"
+                >
+                  ￥{{ item.salary }}
+                </div>
               </div>
-              <div class="time">
-                2020-8-1
+              <div class="arrow-box">
+                <i
+                  class="iconfont"
+                  :class="{
+                    iconicon_shangsheng: item.percent > 0,
+                    iconicon_xiajiang: item.percent < 0
+                  }"
+                ></i>
+                <span v-if="item.percent">{{ item.percent }}%</span>
               </div>
-              <div class="comment">
-                <i class="iconfont iconicon_pinglunliang"></i>
-                123
+            </div>
+          </div>
+          <!-- 更多 -->
+          <div class="more" @click="moreClick">
+            展开更多
+            <i class="iconfont iconicon_zhankai" :class="{ rotate: isAll }"></i>
+          </div>
+        </div>
+      </div>
+      <!-- 面经分享 -->
+      <div class="share-container">
+        <MMcell title="面经分享" value="查看更多"></MMcell>
+        <div class="share-content">
+          <div class="list">
+            <div class="item">
+              <h3>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Temporibus eius dolorum doloremque omnis quae, et nam
+                consectetur, ratione eveniet magni, cupiditate labore? Sunt
+                numquam dolor optio aut placeat praesentium facilis!
+              </h3>
+              <div class="desc">
+                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Qui
+                cum autem ea? Ab repudiandae itaque error nam? Tenetur mollitia
+                adipisci harum voluptatum beatae earum. Quisquam reiciendis
+                quaerat ullam autem at.
               </div>
-              <div class="star">
-                <i class="iconfont iconicon_dianzanliang"></i>
-                1231
+              <div class="detail-box">
+                <div class="user">
+                  <img src="../../assets/logo.png" alt="" />
+                  三大件好事
+                </div>
+                <div class="time">
+                  2020-8-1
+                </div>
+                <div class="comment">
+                  <i class="iconfont iconicon_pinglunliang"></i>
+                  123
+                </div>
+                <div class="star">
+                  <i class="iconfont iconicon_dianzanliang"></i>
+                  1231
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
+  </van-pull-refresh>
 </template>
 
 <script>
@@ -136,10 +138,38 @@ export default {
       // 存放热门列表
       hotList: [],
       // 是否展开
-      isAll: false
+      isAll: false,
+      isLoading: false
     }
   },
   methods: {
+    getData () {
+      apiTechnicArticles().then(res => {
+        console.log(res)
+        res.data.list.forEach(v => {
+          if (v.cover) {
+            v.cover = process.env.VUE_APP_URL + v.cover
+          }
+        })
+        this.technicList = res.data.list
+      })
+      apiHotData().then(res => {
+        console.log(res)
+        // 存数据
+        this.hotData = res.data
+        // 反转数据顺序
+        this.hotData.yearSalary.reverse()
+        this.hotList = this.hotData.yearSalary.slice(0, 4)
+        console.log(this.hotList)
+        console.log(this.hotData)
+      })
+    },
+    // 下拉刷新
+    onRefresh () {
+      this.getData()
+      this.isLoading = false
+    },
+    // 点击更多按钮
     moreClick () {
       this.isAll = !this.isAll
       if (this.isAll === true) {
@@ -150,25 +180,7 @@ export default {
     }
   },
   created () {
-    apiTechnicArticles().then(res => {
-      console.log(res)
-      res.data.list.forEach(v => {
-        if (v.cover) {
-          v.cover = process.env.VUE_APP_URL + v.cover
-        }
-      })
-      this.technicList = res.data.list
-    })
-    apiHotData().then(res => {
-      console.log(res)
-      // 存数据
-      this.hotData = res.data
-      // 反转数据顺序
-      this.hotData.yearSalary.reverse()
-      this.hotList = this.hotData.yearSalary.slice(0, 4)
-      console.log(this.hotList)
-      console.log(this.hotData)
-    })
+    this.getData()
   },
   filters: {
     formatTime (value) {
