@@ -7,6 +7,8 @@ import my from '@/views/my/index.vue'
 import login from '@/views/login/index.vue'
 import userInfo from '@/views/userInfo/userInfo.vue'
 import editInfo from '@/views/userInfo/editInfo.vue'
+import shareList from '@/views/shareList/index.vue'
+import shareSearch from '@/views/shareSearch/index.vue'
 import store from '@/store/index.js'
 import { Toast } from 'vant'
 import { getToken, removeToken } from '@/utils/Local'
@@ -72,6 +74,14 @@ const router = new VueRouter({
       meta: {
         needLogin: true
       }
+    },
+    {
+      path: '/shareList',
+      component: shareList
+    },
+    {
+      path: '/shareSearch',
+      component: shareSearch
     }
   ]
 })

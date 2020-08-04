@@ -1,9 +1,7 @@
 <template>
   <div class="item">
-    <div class="hr"></div>
-    <h3>
-      {{ item.title }}
-    </h3>
+    <!-- <div class="hr"></div> -->
+    <h3 v-html="item.title"></h3>
     <div class="desc">
       {{ item.content }}
     </div>
@@ -38,7 +36,7 @@ export default {
 }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 .item {
   .hr {
     margin: 8px 0px;
@@ -53,6 +51,9 @@ export default {
     font-size: 14px;
     font-weight: 600;
     margin-bottom: 10px;
+    /deep/ span {
+      color: @main-color;
+    }
   }
   .desc {
     font-size: 12px;

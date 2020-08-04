@@ -23,4 +23,10 @@ function apiShareArticles (params) {
     params
   })
 }
-export { apiTechnicArticles, apiShareArticles, apiHotData }
+// 面经热搜
+function apiShareTopSearch () {
+  return request({
+    url: '/articles/shareTopSearch'
+  })
+}
+export { apiTechnicArticles, apiShareArticles, apiHotData, apiShareTopSearch }

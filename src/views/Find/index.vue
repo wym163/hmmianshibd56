@@ -83,7 +83,7 @@
       </div>
       <!-- 面经分享 -->
       <div class="share-container">
-        <MMcell title="面经分享" value="查看更多"></MMcell>
+        <MMcell title="面经分享" value="查看更多" @clickCell="$router.push('/shareList')"></MMcell>
         <div class="share-content">
           <div class="list">
             <MMShareList v-for="item in shareList" :key="item.id" :item="item"></MMShareList>

@@ -18,15 +18,11 @@ import './style/iconfont.css'
 import './style/base.less'
 // 导入moment
 import moment from 'moment'
-import navbar from '@/components/navbar.vue'
-import MMcell from '@/components/MMcell.vue'
-import MMShareList from '@/components/MMShareList.vue'
+// 导入封装好的公共组件
+import globalCom from '@/components'
+
 Vue.use(Vant)
-// 注册全局navbar
-Vue.component(navbar.name, navbar)
-// 注册全局的MMcell
-Vue.component(MMcell.name, MMcell)
-Vue.component(MMShareList.name, MMShareList)
+Vue.use(globalCom)
 // 全局过滤器
 Vue.filter('formatTime', value => {
   moment.locale('zh-cn')
