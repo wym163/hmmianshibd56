@@ -85,35 +85,30 @@
       <div class="share-container">
         <MMcell title="面经分享" value="查看更多"></MMcell>
         <div class="share-content">
-          <div class="list">
+          <div class="list" v-for="item in shareList" :key="item.id">
+            <div class="hr"></div>
             <div class="item">
               <h3>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Temporibus eius dolorum doloremque omnis quae, et nam
-                consectetur, ratione eveniet magni, cupiditate labore? Sunt
-                numquam dolor optio aut placeat praesentium facilis!
+                {{ item.title }}
               </h3>
               <div class="desc">
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Qui
-                cum autem ea? Ab repudiandae itaque error nam? Tenetur mollitia
-                adipisci harum voluptatum beatae earum. Quisquam reiciendis
-                quaerat ullam autem at.
+                {{ item.content }}
               </div>
               <div class="detail-box">
                 <div class="user">
-                  <img src="../../assets/logo.png" alt="" />
-                  三大件好事
+                  <img :src="item.author.avatar" alt="" />
+                  {{ item.author.nickname }}
                 </div>
                 <div class="time">
-                  2020-8-1
+                  {{ item.created_at | formatTime }}
                 </div>
                 <div class="comment">
                   <i class="iconfont iconicon_pinglunliang"></i>
-                  123
+                  {{ item.article_comments }}
                 </div>
                 <div class="star">
                   <i class="iconfont iconicon_dianzanliang"></i>
-                  1231
+                  {{ item.star }}
                 </div>
               </div>
             </div>
@@ -125,7 +120,7 @@
 </template>
 
 <script>
-import { apiTechnicArticles, apiHotData } from '@/api/find.js'
+import { apiTechnicArticles, apiHotData, apiShareArticles } from '@/api/find.js'
 import moment from 'moment'
 export default {
   name: 'find',
@@ -139,11 +134,13 @@ export default {
       hotList: [],
       // 是否展开
       isAll: false,
-      isLoading: false
+      isLoading: false,
+      shareList: []
     }
   },
   methods: {
     getData () {
+      // 面试技巧
       apiTechnicArticles().then(res => {
         console.log(res)
         res.data.list.forEach(v => {
@@ -153,6 +150,7 @@ export default {
         })
         this.technicList = res.data.list
       })
+      // 热门数据
       apiHotData().then(res => {
         console.log(res)
         // 存数据
@@ -162,6 +160,16 @@ export default {
         this.hotList = this.hotData.yearSalary.slice(0, 4)
         console.log(this.hotList)
         console.log(this.hotData)
+      })
+      // 面经分享
+      apiShareArticles().then(res => {
+        console.log(res)
+        this.shareList = res.data.list
+        this.shareList.forEach(v => {
+          if (v.author.avatar) {
+            v.author.avatar = process.env.VUE_APP_URL + v.author.avatar
+          }
+        })
       })
     },
     // 下拉刷新
@@ -183,9 +191,16 @@ export default {
     this.getData()
   },
   filters: {
+    // 处理时间
     formatTime (value) {
-      // 处理时间
-      return moment(value).format('YYYY-MM-DD')
+      value = value.slice(0, value.length - 2)
+      moment.locale('zh-cn')
+      const time = moment().diff(moment(value), 'days')
+      if (time > 1) {
+        return moment(value).format('YYYY-MM-DD')
+      } else {
+        return moment(value).fromNow()
+      }
     }
   }
 }
@@ -341,7 +356,7 @@ export default {
   // 面经分享
   .share-container {
     background: @white-color;
-    margin-bottom: 80px;
+    margin-bottom: 30px;
     .share-content {
       padding: 0 15px;
     }
@@ -354,6 +369,7 @@ export default {
           overflow: hidden;
           font-size: 14px;
           font-weight: 600;
+          margin-bottom: 10px;
         }
         .desc {
           font-size: 12px;
@@ -377,6 +393,7 @@ export default {
               width: 22px;
               height: 22px;
               border-radius: 50%;
+              margin-right: 10px;
             }
           }
           .time,
@@ -404,6 +421,11 @@ export default {
             }
           }
         }
+      }
+      .hr {
+        margin: 8px 0px;
+        background-color: #ccc;
+        height: 0.1px;
       }
     }
   }
