@@ -7,7 +7,7 @@ var request = axios.create({
 })
 request.interceptors.request.use(
   function (config) {
-    console.log(config)
+    // console.log(config)
     if (config.needToken) {
       if (getToken()) {
         config.headers.authorization = `Bearer ${getToken()}`

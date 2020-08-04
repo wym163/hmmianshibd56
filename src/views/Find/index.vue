@@ -8,56 +8,28 @@
       <MMcell title="面试技巧" value="查看更多"></MMcell>
       <div class="list">
         <!-- 有图片 -->
-        <div class="item">
+        <div class="item" v-for="item in technicList" :key="item.id">
           <div class="left">
             <h3>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae
-              voluptate laudantium excepturi provident cumque accusantium
-              molestias natus fugit eius atque numquam laborum omnis, tempora
-              velit incidunt nesciunt nisi, perferendis quis.
+              {{ item.title }}
             </h3>
             <div class="detail-box">
-              <div class="time">2020-8-1</div>
+              <div class="time">{{ item.created_at | formatTime }}</div>
               <div class="read">
                 <i class="iconfont iconicon_liulanliang">
-                  12
+                  {{ item.read }}
                 </i>
               </div>
               <div class="star">
                 <i class="iconfont iconicon_dianzanliang">
-                  31
+                  {{ item.star }}
                 </i>
               </div>
             </div>
           </div>
-          <div class="cover">
-            <img src="../../assets/logo.png" alt="" />
+          <div class="cover" v-if="item.cover">
+            <img :src="item.cover" alt="" />
           </div>
-        </div>
-        <!-- 没有图片 -->
-        <div class="item">
-          <div class="left">
-            <h3>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae
-              voluptate laudantium excepturi provident cumque accusantium
-              molestias natus fugit eius atque numquam laborum omnis, tempora
-              velit incidunt nesciunt nisi, perferendis quis.
-            </h3>
-            <div class="detail-box">
-              <div class="time">2020-8-1</div>
-              <div class="read">
-                <i class="iconfont iconicon_liulanliang">
-                  12
-                </i>
-              </div>
-              <div class="star">
-                <i class="iconfont iconicon_dianzanliang">
-                  31
-                </i>
-              </div>
-            </div>
-          </div>
-          <div class="cover"></div>
         </div>
       </div>
     </div>
@@ -67,45 +39,44 @@
       <div class="content">
         <div class="tags">
           <span class="tag">
-            深圳
+            {{ hotData.city }}
           </span>
           <span class="tag">
-            前端开发工程师
+            {{ hotData.position }}
           </span>
         </div>
         <!-- 列表 -->
         <div class="data-list">
           <!-- 上箭头 -->
-          <div class="item">
-            <div class="time">2020年</div>
+          <div class="item" v-for="(item, index) in hotList" :key="index">
+            <div class="time">{{ item.year }}</div>
             <div class="process">
-              <div class="step">
-                ￥12323
+              <div
+                class="step"
+                :style="{
+                  width:
+                    ((item.salary / hotData.topSalary) * 100).toFixed(1) + '%'
+                }"
+              >
+                ￥{{ item.salary }}
               </div>
             </div>
             <div class="arrow-box">
-              <i class="iconfont iconicon_shangsheng"></i>
-              10%
-            </div>
-          </div>
-          <!-- 下箭头 -->
-          <div class="item">
-            <div class="time">2020年</div>
-            <div class="process">
-              <div class="step">
-                ￥12323
-              </div>
-            </div>
-            <div class="arrow-box">
-              <i class="iconfont iconicon_xiajiang"></i>
-              10%
+              <i
+                class="iconfont"
+                :class="{
+                  iconicon_shangsheng: item.percent > 0,
+                  iconicon_xiajiang: item.percent < 0
+                }"
+              ></i>
+              <span v-if="item.percent">{{ item.percent }}%</span>
             </div>
           </div>
         </div>
         <!-- 更多 -->
-        <div class="more">
+        <div class="more" @click="moreClick">
           展开更多
-          <i class="iconfont iconicon_zhankai"></i>
+          <i class="iconfont iconicon_zhankai" :class="{rotate:isAll}"></i>
         </div>
       </div>
     </div>
@@ -152,8 +123,59 @@
 </template>
 
 <script>
+import { apiTechnicArticles, apiHotData } from '@/api/find.js'
+import moment from 'moment'
 export default {
-  name: 'find'
+  name: 'find',
+  data () {
+    return {
+      // 面试技巧列表
+      technicList: [],
+      // 热门数据
+      hotData: {},
+      // 存放热门列表
+      hotList: [],
+      // 是否展开
+      isAll: false
+    }
+  },
+  methods: {
+    moreClick () {
+      this.isAll = !this.isAll
+      if (this.isAll === true) {
+        this.hotList = this.hotData.yearSalary
+      } else {
+        this.hotList = this.hotData.yearSalary.slice(0, 4)
+      }
+    }
+  },
+  created () {
+    apiTechnicArticles().then(res => {
+      console.log(res)
+      res.data.list.forEach(v => {
+        if (v.cover) {
+          v.cover = process.env.VUE_APP_URL + v.cover
+        }
+      })
+      this.technicList = res.data.list
+    })
+    apiHotData().then(res => {
+      console.log(res)
+      // 存数据
+      this.hotData = res.data
+      // 反转数据顺序
+      this.hotData.yearSalary.reverse()
+      this.hotList = this.hotData.yearSalary.slice(0, 4)
+      console.log(this.hotList)
+      console.log(this.hotData)
+    })
+  },
+  filters: {
+    formatTime (value) {
+      // 处理时间
+      return moment(value).format('YYYY-MM-DD')
+    }
+  }
 }
 </script>
 
@@ -183,6 +205,7 @@ export default {
             -webkit-box-orient: vertical;
             -webkit-line-clamp: 2;
             overflow: hidden;
+            margin-bottom: 15px;
           }
           .detail-box {
             display: flex;
@@ -272,6 +295,7 @@ export default {
           display: flex;
           align-items: center;
           font-size: 12px;
+          width: 50px;
           i {
             font-size: 16px;
             // 下箭头
@@ -296,12 +320,16 @@ export default {
       i {
         color: @minor-font-color;
         font-size: 14px;
+        &.rotate {
+          transform: rotate(180deg);
+        }
       }
     }
   }
   // 面经分享
   .share-container {
     background: @white-color;
+    margin-bottom: 80px;
     .share-content {
       padding: 0 15px;
     }
@@ -339,7 +367,9 @@ export default {
               border-radius: 50%;
             }
           }
-          .time,.comment,.star {
+          .time,
+          .comment,
+          .star {
             font-size: 12px;
             color: @minor-font-color;
           }
@@ -347,9 +377,9 @@ export default {
             margin-right: 20px;
           }
           .comment {
-             margin-right: 20px;
-             display: flex;
-             align-items: center;
+            margin-right: 20px;
+            display: flex;
+            align-items: center;
             i {
               font-size: 16px;
             }
