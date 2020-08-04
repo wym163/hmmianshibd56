@@ -85,33 +85,8 @@
       <div class="share-container">
         <MMcell title="面经分享" value="查看更多"></MMcell>
         <div class="share-content">
-          <div class="list" v-for="item in shareList" :key="item.id">
-            <div class="hr"></div>
-            <div class="item">
-              <h3>
-                {{ item.title }}
-              </h3>
-              <div class="desc">
-                {{ item.content }}
-              </div>
-              <div class="detail-box">
-                <div class="user">
-                  <img :src="item.author.avatar" alt="" />
-                  {{ item.author.nickname }}
-                </div>
-                <div class="time">
-                  {{ item.created_at | formatTime }}
-                </div>
-                <div class="comment">
-                  <i class="iconfont iconicon_pinglunliang"></i>
-                  {{ item.article_comments }}
-                </div>
-                <div class="star">
-                  <i class="iconfont iconicon_dianzanliang"></i>
-                  {{ item.star }}
-                </div>
-              </div>
-            </div>
+          <div class="list">
+            <MMShareList v-for="item in shareList" :key="item.id" :item="item"></MMShareList>
           </div>
         </div>
       </div>
@@ -121,7 +96,6 @@
 
 <script>
 import { apiTechnicArticles, apiHotData, apiShareArticles } from '@/api/find.js'
-import moment from 'moment'
 export default {
   name: 'find',
   data () {
@@ -192,16 +166,6 @@ export default {
   },
   filters: {
     // 处理时间
-    formatTime (value) {
-      value = value.slice(0, value.length - 2)
-      moment.locale('zh-cn')
-      const time = moment().diff(moment(value), 'days')
-      if (time > 1) {
-        return moment(value).format('YYYY-MM-DD')
-      } else {
-        return moment(value).fromNow()
-      }
-    }
   }
 }
 </script>
@@ -361,72 +325,6 @@ export default {
       padding: 0 15px;
     }
     .list {
-      .item {
-        h3 {
-          display: -webkit-box;
-          -webkit-box-orient: vertical;
-          -webkit-line-clamp: 2;
-          overflow: hidden;
-          font-size: 14px;
-          font-weight: 600;
-          margin-bottom: 10px;
-        }
-        .desc {
-          font-size: 12px;
-          color: @subdominant-font-color;
-          display: -webkit-box;
-          -webkit-box-orient: vertical;
-          -webkit-line-clamp: 2;
-          overflow: hidden;
-          margin-bottom: 20px;
-        }
-        .detail-box {
-          display: flex;
-          align-items: center;
-          .user {
-            display: flex;
-            align-items: center;
-            color: @subdominant-font-color;
-            font-size: 12px;
-            flex: 1;
-            img {
-              width: 22px;
-              height: 22px;
-              border-radius: 50%;
-              margin-right: 10px;
-            }
-          }
-          .time,
-          .comment,
-          .star {
-            font-size: 12px;
-            color: @minor-font-color;
-          }
-          .time {
-            margin-right: 20px;
-          }
-          .comment {
-            margin-right: 20px;
-            display: flex;
-            align-items: center;
-            i {
-              font-size: 16px;
-            }
-          }
-          .star {
-            display: flex;
-            align-items: center;
-            i {
-              font-size: 16px;
-            }
-          }
-        }
-      }
-      .hr {
-        margin: 8px 0px;
-        background-color: #ccc;
-        height: 0.1px;
-      }
     }
   }
 }

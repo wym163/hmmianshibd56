@@ -16,13 +16,28 @@ import 'amfe-flexible'
 import './style/iconfont.css'
 // 初始样式
 import './style/base.less'
+// 导入moment
+import moment from 'moment'
 import navbar from '@/components/navbar.vue'
 import MMcell from '@/components/MMcell.vue'
+import MMShareList from '@/components/MMShareList.vue'
 Vue.use(Vant)
 // 注册全局navbar
 Vue.component(navbar.name, navbar)
 // 注册全局的MMcell
 Vue.component(MMcell.name, MMcell)
+Vue.component(MMShareList.name, MMShareList)
+// 全局过滤器
+Vue.filter('formatTime', value => {
+  moment.locale('zh-cn')
+  // value = value.slice(0, value.length - 2)
+  // const time = moment().diff(moment(value), 'days')
+  // if (time > 1) {
+  //   return moment(value).format('YYYY-MM-DD')
+  // } else {
+  return moment(value).fromNow()
+})
+
 Vue.config.productionTip = false
 
 new Vue({
