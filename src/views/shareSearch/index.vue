@@ -131,6 +131,8 @@ export default {
 
 <style lang="less">
 .interview-search-container {
+    min-height: 100vh;
+    background: @white-color;
   .top-box {
     padding-bottom: 11px;
     background: @white-color;

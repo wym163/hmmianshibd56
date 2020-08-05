@@ -29,4 +29,28 @@ function apiShareTopSearch () {
     url: '/articles/shareTopSearch'
   })
 }
-export { apiTechnicArticles, apiShareArticles, apiHotData, apiShareTopSearch }
+// 面经详情
+function apiShareDetail (id) {
+  return request({
+    url: `/articles/share/${id}`
+  })
+}
+// 面经评论
+function apiShareComment (params) {
+  const { id, limit, start } = params
+  return request({
+    url: `/articles/comments/${id}`,
+    params: {
+      limit,
+      start
+    }
+  })
+}
+export {
+  apiTechnicArticles,
+  apiShareArticles,
+  apiHotData,
+  apiShareTopSearch,
+  apiShareDetail,
+  apiShareComment
+}

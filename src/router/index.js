@@ -9,6 +9,7 @@ import userInfo from '@/views/userInfo/userInfo.vue'
 import editInfo from '@/views/userInfo/editInfo.vue'
 import shareList from '@/views/shareList/index.vue'
 import shareSearch from '@/views/shareSearch/index.vue'
+import shareDetail from '@/views/shareDetail/index.vue'
 import store from '@/store/index.js'
 import { Toast } from 'vant'
 import { getToken, removeToken } from '@/utils/Local'
@@ -82,6 +83,11 @@ const router = new VueRouter({
     {
       path: '/shareSearch',
       component: shareSearch
+    },
+    {
+      // 动态路由
+      path: '/shareDetail/:id',
+      component: shareDetail
     }
   ]
 })

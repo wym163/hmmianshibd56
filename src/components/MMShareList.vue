@@ -1,8 +1,8 @@
 <template>
   <div class="item">
     <!-- <div class="hr"></div> -->
-    <h3 v-html="item.title"></h3>
-    <div class="desc">
+    <h3 v-html="item.title" @click="$router.push(`/shareDetail/${item.id}`)"></h3>
+    <div class="desc" @click="$router.push(`/shareDetail/${item.id}`)">
       {{ item.content }}
     </div>
     <div class="detail-box">
