@@ -20,9 +20,12 @@ import './style/base.less'
 import moment from 'moment'
 // 导入封装好的公共组件
 import globalCom from '@/components'
+// 导入全局抽取的组件
+import plugin from '@/plugin/index.js'
 
 Vue.use(Vant)
 Vue.use(globalCom)
+Vue.use(plugin)
 // 全局过滤器
 Vue.filter('formatTime', value => {
   moment.locale('zh-cn')

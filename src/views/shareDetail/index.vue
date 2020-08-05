@@ -125,7 +125,7 @@
         :placeholder="placeholder"
         rows="4"
       />
-      <span>发送</span>
+      <span @click="sendBtn">发送</span>
     </van-popup>
     <!-- 分享弹出层 -->
     <van-popup v-model="showShare">
@@ -191,6 +191,10 @@ export default {
     })
   },
   methods: {
+    // 发送点击事件
+    sendBtn () {
+      this.$checkLogin()
+    },
     showPop (item) {
       // console.log(item)
       // 如果有值
