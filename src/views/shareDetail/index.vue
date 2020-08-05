@@ -46,7 +46,7 @@
           </div>
           <!-- 评论内容 -->
           <div class="content-box">
-            <div class="content">{{ commentList.content }}</div>
+            <div class="content">{{ item.content }}</div>
             <div class="reply-box" v-if="item.children_comments.length > 0">
               <div
                 class="reply"
@@ -154,7 +154,11 @@
 </template>
 
 <script>
-import { apiShareDetail, apiShareComment } from '@/api/find.js'
+import {
+  apiShareDetail,
+  apiShareComment,
+  apiArticlesComment
+} from '@/api/find.js'
 export default {
   data () {
     return {
@@ -193,7 +197,26 @@ export default {
   methods: {
     // 发送点击事件
     sendBtn () {
-      this.$checkLogin()
+      this.$checkLogin().then(() => {
+        apiArticlesComment({
+          content: this.value,
+          article: this.$route.params.id
+        })
+          .then(res => {
+            console.log(res)
+            if (res.data.author.avatar) {
+              res.data.author.avatar =
+                process.env.VUE_APP_URL + res.data.author.avatar
+            }
+            this.commentList.unshift(res.data)
+            this.$toast.success('发布成功')
+            this.show = false
+            this.value = ''
+          })
+          .catch(() => {
+            console.log(213123123)
+          })
+      })
     },
     showPop (item) {
       // console.log(item)

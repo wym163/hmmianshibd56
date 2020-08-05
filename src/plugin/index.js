@@ -5,7 +5,6 @@ import { apiGetInfo } from '@/api/user.js'
 import { Toast } from 'vant'
 export default function (Vue) {
   Vue.prototype.$checkLogin = function () {
-    console.log('测试登录')
     // 返回promise对象
     return new Promise((resolve, reject) => {
       if (store.state.isLogin) {
@@ -19,6 +18,7 @@ export default function (Vue) {
             .then(res => {
               //   成功
               //   处理头像地址
+            //   console.log(res)
               res.data.avatar = process.env.VUE_APP_URL + res.data.avatar
               // 保存用户信息
               store.commit('SETUSERINFO', res.data)
@@ -34,7 +34,7 @@ export default function (Vue) {
               // 跳转到登录页
               router.push('/login?redirect=' + this.$route.fullPath)
               //   console.log(this.$route.fullPath)
-              reject(new Error())
+              reject(new Error('请先登录11'))
             })
         } else {
           // 没登录没token
@@ -42,7 +42,7 @@ export default function (Vue) {
           Toast.fail('请先登录')
           // 跳转到登录页
           router.push('/login?redirect=' + this.$route.fullPath)
-          reject(new Error())
+          reject(new Error('请先登录22'))
         }
       }
     })

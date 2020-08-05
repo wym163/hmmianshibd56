@@ -46,11 +46,21 @@ function apiShareComment (params) {
     }
   })
 }
+// 发布评论
+function apiArticlesComment (data) {
+  return request({
+    url: '/articles/comments',
+    method: 'post',
+    needToken: true,
+    data
+  })
+}
 export {
   apiTechnicArticles,
   apiShareArticles,
   apiHotData,
   apiShareTopSearch,
   apiShareDetail,
-  apiShareComment
+  apiShareComment,
+  apiArticlesComment
 }
