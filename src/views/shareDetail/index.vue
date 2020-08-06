@@ -101,11 +101,11 @@
         <i class="iconfont iconbtn_shoucang_nor"></i>
         234
       </div>
-      <div class="star" @click="likeArticles">
+      <div class="star" @click="likeArticles" :class="{ active: isStar }">
         <i class="iconfont iconbtn_dianzan_small_nor"></i>
-        125
+        {{ num }}
       </div>
-      <div class="share" @click="showShare = true">
+      <div class="share" @click="showSharePop">
         <i class="iconfont iconbtn_share"></i>
         998
       </div>
@@ -129,23 +129,23 @@
     </van-popup>
     <!-- 分享弹出层 -->
     <van-popup v-model="showShare">
-      <div class="share-box">
+      <div class="share-box" ref="sharebox">
         <div class="text">
           长按图片下载并分享
         </div>
         <div class="share-content-box">
           <div class="title">
-            拿到百度音乐的offer后，我总结了面试产品实习的几点经验
+            {{ shareDetail.title }}
           </div>
           <div class="user-box">
-            <img src="../../assets/logo.png" alt="" />
-            <span>热爱生活</span>
+            <img :src="shareDetail && shareDetail.author.avatar" alt="" />
+            <span>{{ shareDetail && shareDetail.author.nickname }}</span>
           </div>
           <div class="content">
-            先说一下我的基本情况，本人是北京大学前沿交叉学院数据科学专业研一学生，本科在兰州大学信息安全专业。之所以选择走产品而不是技术，代码能力马马虎虎，而且对编程不感兴趣，最关键的是我性格比较外向，比起每天闷头敲代码，更喜欢和人打交道。于是乎，我开始从各种渠道了解产品经理的前世今生，从《人人都是产品经理》这本书和人人都是产品经理社区，再到知乎，了解到了很多笼统的概念，但是感觉如果没有亲身经历，理论和框架就显得很空洞，而且产品不像技术，门槛相对略低，所以更需要实习的经历，再加上本科的时候从未有过实习经历，所以我很迫切的想找一份产品实习。在面试了滴滴出行、回家吃饭和百度音乐之后，拿到了后面两家的Offer，最终选择了百度音乐。
+            {{ shareDetail.contentText }}
           </div>
-          <img class="logo" src="../../assets/logo.png" alt="" />
-          <img class="code" src="../../assets/logo.png" alt="" />
+          <img class="logo" src="../../assets/mians.png" alt="" />
+          <img class="code" :src="qrCodeUrl" alt="" />
           <div class="direction">长按识别二维码查看原文</div>
         </div>
       </div>
@@ -154,7 +154,10 @@
 </template>
 
 <script>
-import { mapMutations } from 'vuex'
+// 导入cqcode
+import QRCode from 'qrcode'
+import html2canvas from 'html2canvas'
+import { mapMutations, mapState } from 'vuex'
 import {
   apiShareDetail,
   apiShareComment,
@@ -185,7 +188,26 @@ export default {
       // 评论提示
       placeholder: '我来补充两句',
       // 回复
-      parantComment: ''
+      parantComment: '',
+      num: 0,
+      // 二维码
+      qrCodeUrl: ''
+    }
+  },
+  async mounted () {
+    const codeUrl = await QRCode.toDataURL(window.location.href)
+    this.qrCodeUrl = codeUrl
+  },
+  computed: {
+    ...mapState(['userInfo']),
+    isStar () {
+      if (this.userInfo) {
+        const id = +this.$route.params.id
+        const isStar = this.userInfo.starArticles.includes(id)
+        return isStar
+      } else {
+        return false
+      }
     }
   },
   created () {
@@ -200,14 +222,30 @@ export default {
   },
   methods: {
     ...mapMutations(['SETPROPVALUE']),
+    // 分享点击事件
+    async showSharePop () {
+      await this.$checkLogin()
+      this.showShare = true
+      this.$nextTick(async () => {
+        const canvas = await html2canvas(this.$refs.sharebox, {
+          // 解决头像不显示问题
+          allowTaint: true,
+          useCORS: true
+        })
+        const imgUrl = canvas.toDataURL()
+        console.log(imgUrl)
+      })
+    },
     // 点赞点击事件
     async likeArticles () {
+      await this.$checkLogin()
       const res = await apiLikeArticles({ article: this.$route.params.id })
       console.log(res)
       this.SETPROPVALUE({
         propName: 'starArticles',
         propValue: res.data.list
       })
+      this.num = res.data.num
     },
     // 发送点击事件
     async sendBtn () {
@@ -279,6 +317,9 @@ export default {
 
 <style lang="less">
 .experience-detail-container {
+  .active {
+    color: @main-color !important;
+  }
   width: 375px;
   background-color: @white-color;
   overflow: hidden;
@@ -422,6 +463,7 @@ export default {
       margin-right: 24px;
     }
     .star {
+      text-align: center;
       margin-right: 24px;
     }
   }
@@ -454,7 +496,7 @@ export default {
     background-position-x: 0;
     background-position-y: 0;
     padding: 0 15px 15px;
-    // background-image: url('../../assets/ios3x_img_share_bj@3x.png');
+    background-image: url('../../assets/bg.png');
     display: flex;
     flex-direction: column;
     .text {
