@@ -55,6 +55,15 @@ function apiArticlesComment (data) {
     data
   })
 }
+// 文章点赞接口
+function apiLikeArticles (data) {
+  return request({
+    url: '/articles/star',
+    method: 'post',
+    needToken: true,
+    data
+  })
+}
 export {
   apiTechnicArticles,
   apiShareArticles,
@@ -62,5 +71,6 @@ export {
   apiShareTopSearch,
   apiShareDetail,
   apiShareComment,
-  apiArticlesComment
+  apiArticlesComment,
+  apiLikeArticles
 }

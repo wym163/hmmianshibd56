@@ -101,7 +101,7 @@
         <i class="iconfont iconbtn_shoucang_nor"></i>
         234
       </div>
-      <div class="star">
+      <div class="star" @click="likeArticles">
         <i class="iconfont iconbtn_dianzan_small_nor"></i>
         125
       </div>
@@ -154,10 +154,12 @@
 </template>
 
 <script>
+import { mapMutations } from 'vuex'
 import {
   apiShareDetail,
   apiShareComment,
-  apiArticlesComment
+  apiArticlesComment,
+  apiLikeArticles
 } from '@/api/find.js'
 export default {
   data () {
@@ -181,7 +183,9 @@ export default {
       // 评论回复
       children_comments: [],
       // 评论提示
-      placeholder: '我来补充两句'
+      placeholder: '我来补充两句',
+      // 回复
+      parantComment: ''
     }
   },
   created () {
@@ -195,30 +199,49 @@ export default {
     })
   },
   methods: {
-    // 发送点击事件
-    sendBtn () {
-      this.$checkLogin().then(() => {
-        apiArticlesComment({
-          content: this.value,
-          article: this.$route.params.id
-        })
-          .then(res => {
-            console.log(res)
-            if (res.data.author.avatar) {
-              res.data.author.avatar =
-                process.env.VUE_APP_URL + res.data.author.avatar
-            }
-            this.commentList.unshift(res.data)
-            this.$toast.success('发布成功')
-            this.show = false
-            this.value = ''
-          })
-          .catch(() => {
-            console.log(213123123)
-          })
+    ...mapMutations(['SETPROPVALUE']),
+    // 点赞点击事件
+    async likeArticles () {
+      const res = await apiLikeArticles({ article: this.$route.params.id })
+      console.log(res)
+      this.SETPROPVALUE({
+        propName: 'starArticles',
+        propValue: res.data.list
       })
     },
+    // 发送点击事件
+    async sendBtn () {
+      try {
+        await this.$checkLogin()
+        const data = {
+          content: this.value
+        }
+        if (this.parantComment) {
+          data.parent = this.parantComment.id
+        } else {
+          data.article = this.$route.params.id
+        }
+        const res = await apiArticlesComment(data)
+        console.log(res)
+        if (res.data.parent) {
+          this.parantComment.children_comments.push(res.data)
+          this.parantComment = ''
+        } else {
+          if (res.data.author.avatar) {
+            res.data.author.avatar =
+              process.env.VUE_APP_URL + res.data.author.avatar
+          }
+          this.commentList.unshift(res.data)
+        }
+        this.$toast.success('发布成功')
+        this.show = false
+        this.value = ''
+      } catch (error) {
+        console.log('出错了哦', error)
+      }
+    },
     showPop (item) {
+      this.parantComment = item
       // console.log(item)
       // 如果有值
       if (item) {
@@ -256,7 +279,9 @@ export default {
 
 <style lang="less">
 .experience-detail-container {
+  width: 375px;
   background-color: @white-color;
+  overflow: hidden;
   .van-nav-bar__left {
     padding-left: 0;
   }
@@ -371,7 +396,7 @@ export default {
     box-sizing: border-box;
     padding: 10px 15px 0;
     background-color: @white-color;
-    width: 100%;
+    width: 375px;
     justify-content: space-between;
     .input {
       height: 34px;
@@ -401,6 +426,7 @@ export default {
     }
   }
   .input-pop {
+    width: 375px;
     padding: 25px 15px 0;
     overflow: hidden;
     // 弹出层
